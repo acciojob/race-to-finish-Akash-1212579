@@ -1,34 +1,21 @@
-window.promises = [];
-// Do not change the code above this
-// add your promises to the array `promises`
-const promise1 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve('Promise 1 resolved'), 500);
-});
+  window.promises = [];
 
-const promise2 = new Promise((resolve, reject) => {
-  setTimeout(() => reject('Promise 2 rejected'), 200);
-});
+    // Create 5 promises that resolve randomly between 1–5 seconds
+    for (let i = 1; i <= 5; i++) {
+      const delay = Math.floor(Math.random() * 5 + 1) * 1000; // 1–5 seconds
+      const promise = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(`Promise ${i} resolved in ${delay / 1000} seconds`);
+        }, delay);
+      });
+      promises.push(promise);
+    }
 
-const promise3 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve('Promise 3 resolved'), 100);
-});
-const promise4 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve('Promise 1 resolved'), 400);
-});
-
-const promise5 = new Promise((resolve, reject) => {
-  setTimeout(() => reject('Promise 2 rejected'), 250);
-});
-promises.push(promise1);
-promises.push(promise2);
-promises.push(promise3);
-promises.push(promise4);
-promises.push(promise5);
-
-Promise.any(promises)
-  .then((value) => {
-    console.log('Resolved with:', value);
-  })
-  .catch((error) => {
-    console.error('All promises rejected:', error.errors);
-  });
+    // Wait for the first promise to resolve
+    Promise.any(promises)
+      .then((result) => {
+        document.getElementById("output").innerText = result;
+      })
+      .catch((error) => {
+        document.getElementById("output").innerText = "All promises rejected";
+      });
